@@ -9,9 +9,16 @@ library(wordcloud)
 library(ggplot2)
 library(scales)
 
+# General remaining quirks: 
+# setcolorder(dd1.sent, c("dd1.num", "speech")) does not work. It is unclear why it does not work.
+# If it were to work, what would it add to the analysis, if anything? 
+# Would it even be better than lapply? Probably not.
+# Need to smooth out the plots and configure statistical analysis.
+
 # Load data from the first Republican presidential debate from a local file.
 # 'paste' loads data and concatenates it into character-based data.
 # 'scan' reads list data.
+
 # Donald Trump
 dd1 <- paste(scan("./DonaldDebate1.txt", what="character"), collapse = " ")
 attach(dd1)
@@ -23,7 +30,7 @@ dd1.df <- data.table(speech=dd1, person = "Donald Trump")
 dd1.sent <- data.table(sentSplit(dd1.df, "speech"))
 
 dd1.num <- seq(nrow(dd1.sent))
-setcolorder(dd1.sent, c("dd1.num", "speech"))
+lapply(dd1.sent, as.numeric)
 dd1.syl <- syllable_sum(dd1)
 
 pol.dd1 <- polarity(dd1.sent$speech) $all
@@ -39,17 +46,17 @@ summary(dd1wordavg)
 
 plot(pol.dd1, dd1.words)
 
+# 
+
 dd2 <- paste(scan("./DonaldDebate2.txt", what="character"), collapse = " ")
 attach(dd2)
 wordcloud(dd2)
 
-# Convert the data into a table that can later be used for more intensive analysis.
-# Then, I divide the data into sentences.
 dd2.df <- data.table(speech=dd2, person = "Donald Trump")
 dd2.sent <- data.table(sentSplit(dd2.df, "speech"))
 
 dd2.num <- seq(nrow(dd2.sent))
-setcolorder(dd2.sent, c("dd2.num", "speech"))
+lapply(dd2.sent, as.numeric)
 dd2.syl <- syllable_sum(dd2)
 
 pol.dd2 <- polarity(dd2.sent$speech) $all
@@ -69,13 +76,11 @@ dd3 <- paste(scan("./DonaldDebate3.txt", what="character"), collapse = " ")
 attach(dd3)
 wordcloud(dd3)
 
-# Convert the data into a table that can later be used for more intensive analysis.
-# Then, I divide the data into sentences.
 dd3.df <- data.table(speech=dd3, person = "Donald Trump")
 dd3.sent <- data.table(sentSplit(dd3.df, "speech"))
 
 dd3.num <- seq(nrow(dd3.sent))
-setcolorder(dd3.sent, c("dd3.num", "speech"))
+lapply(dd3.sent, as.numeric)
 dd3.syl <- syllable_sum(dd3)
 
 pol.dd3 <- polarity(dd3.sent$speech) $all
@@ -95,13 +100,11 @@ dd4 <- paste(scan("./DonaldDebate4.txt", what="character"), collapse = " ")
 attach(dd4)
 wordcloud(dd4)
 
-# Convert the data into a table that can later be used for more intensive analysis.
-# Then, I divide the data into sentences.
 dd4.df <- data.table(speech=dd4, person = "Donald Trump")
 dd4.sent <- data.table(sentSplit(dd4.df, "speech"))
 
 dd4.num <- seq(nrow(dd4.sent))
-setcolorder(dd4.sent, c("dd4.num", "speech"))
+lapply(dd4.sent, as.numeric)
 dd4.syl <- syllable_sum(dd4)
 
 pol.dd4 <- polarity(dd4.sent$speech) $all
@@ -121,13 +124,11 @@ dd5 <- paste(scan("./DonaldDebate5.txt", what="character"), collapse = " ")
 attach(dd5)
 wordcloud(dd5)
 
-# Convert the data into a table that can later be used for more intensive analysis.
-# Then, I divide the data into sentences.
 dd5.df <- data.table(speech=dd5, person = "Donald Trump")
 dd5.sent <- data.table(sentSplit(dd5.df, "speech"))
 
 dd5.num <- seq(nrow(dd5.sent))
-setcolorder(dd5.sent, c("dd5.num", "speech"))
+lapply(dd5.sent, as.numeric)
 dd5.syl <- syllable_sum(dd5)
 
 pol.dd5 <- polarity(dd5.sent$speech) $all
@@ -147,13 +148,11 @@ dd6 <- paste(scan("./DonaldDebate6.txt", what="character"), collapse = " ")
 attach(dd6)
 wordcloud(dd6)
 
-# Convert the data into a table that can later be used for more intensive analysis.
-# Then, I divide the data into sentences.
 dd6.df <- data.table(speech=dd6, person = "Donald Trump")
 dd6.sent <- data.table(sentSplit(dd6.df, "speech"))
 
 dd6.num <- seq(nrow(dd6.sent))
-setcolorder(dd6.sent, c("dd6.num", "speech"))
+lapply(dd6.sent, as.numeric)
 dd6.syl <- syllable_sum(dd6)
 
 pol.dd6 <- polarity(dd6.sent$speech) $all
@@ -168,6 +167,32 @@ dd6wordavg <- c(dd6.syl/dd6.wc)
 summary(dd6wordavg)
 
 plot(pol.dd6, dd6.words)
+
+## ##
+
+AllDon <- paste(scan("./Donald.txt", what="character"), collapse = " ")
+attach(AllDon)
+wordcloud(AllDon)
+
+AllDon.df <- data.table(speech=AlLDon, person = "Donald Trump")
+AllDon.sent <- data.table(sentSplit(AllDon.df, "speech"))
+
+AllDon.num <- seq(nrow(AllDon.sent))
+lapply(AllDon.sent, as.numeric)
+AllDon.syl <- syllable_sum(AllDon)
+
+pol.AllDon <- polarity(AllDon.sent$speech) $all
+AllDon.words <- pol.AllDon$wc
+AllDon.pol <- pol.AllDon$polarity
+AllDon.wc <- word_count(AllDon)
+freq_terms(AllDon)
+
+AlLDonsentavg <- c(AllDon.syl/AllDon.num)
+summary(AllDonsentavg)
+AllDonwordavg <- c(AllDon.syl/AllDon.wc)
+summary(AllDonwordavg)
+
+plot(pol.AllDon, dd6.AllDon)
 
 # Function appears to be broken, will need to find a way to fix soon.
 readability <- automated_readability_index(speech, sentence.num) $Automated_Readability_Index
@@ -391,7 +416,7 @@ bd1.pol <- pol.bd1$polarity
 summary(pol.bd1)
 freq_terms(bd1)
 
-bd1sentavg <- c(bd1.sent/bd1.num)
+bd1sentavg <- c(bd1.syl/bd1.num)
 summary(bd1sentavg)
 bd1wordavg <- c(bd1.syl/bd1.wc)
 summary(bd1wordavg)
@@ -532,7 +557,7 @@ summary(hd2wordavg)
 
 plot(hd2.pol, hd2.words)
 
-hd3 <- paste(scan("./HillaryDebate1.txt", what="character"), collapse = " ")
+hd3 <- paste(scan("./HillaryDebate3.txt", what="character"), collapse = " ")
 attach(hd3)
 wordcloud(hd3)
 
@@ -558,7 +583,7 @@ summary(hd3wordavg)
 
 plot(hd3.pol, hd3.words)
 
-hd4 <- paste(scan("./HillaryDebate1.txt", what="character"), collapse = " ")
+hd4 <- paste(scan("./HillaryDebate4.txt", what="character"), collapse = " ")
 attach(hd4)
 wordcloud(hd4)
 
@@ -594,6 +619,7 @@ mom1.df <- data.table(speech=mom1, person = "Martin O’Malley")
 mom1.sent <- data.table(sentSplit(mom1.df, "speech"))
 
 mom1.num <- seq(nrow(mom1.sent))
+summary(mom1.num)
 setcolorder(mom1.sent, c("mom1.num", "speech"))
 mom1.syl <- syllable_sum(mom1)
 summary(mom1.syl)
@@ -605,14 +631,14 @@ mom1.pol <- pol.mom1$polarity
 summary(pol.mom1)
 freq_terms(mom1)
 
-mom1sentavg <- c(mom1.sent/mom1.num)
+mom1sentavg <- c(mom1.syl/mom1.num)
 summary(mom1sentavg)
 mom1wordavg <- c(mom1.syl/mom1.wc)
 summary(mom1wordavg)
 
 plot(mom1.pol, mom1.words)
 
-mom2 <- paste(scan("./MartinDebate1.txt", what="character"), collapse = " ")
+mom2 <- paste(scan("./MartinDebate2.txt", what="character"), collapse = " ")
 attach(mom2)
 wordcloud(mom2)
 
@@ -638,7 +664,7 @@ summary(mom2wordavg)
 
 plot(mom2.pol, mom2.words)
 
-mom3 <- paste(scan("./MartinDebate1.txt", what="character"), collapse = " ")
+mom3 <- paste(scan("./MartinDebate3.txt", what="character"), collapse = " ")
 attach(mom3)
 wordcloud(mom3)
 
@@ -664,7 +690,7 @@ summary(mom3wordavg)
 
 plot(mom3.pol, mom3.words)
 
-mom4 <- paste(scan("./MartinDebate1.txt", what="character"), collapse = " ")
+mom4 <- paste(scan("./MartinDebate4.txt", what="character"), collapse = " ")
 attach(mom4)
 wordcloud(mom4)
 
