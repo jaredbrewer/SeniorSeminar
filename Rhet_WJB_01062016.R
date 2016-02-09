@@ -32,6 +32,7 @@ dd1.sent <- data.table(sentSplit(dd1.df, "speech"))
 dd1.num <- seq(nrow(dd1.sent))
 lapply(dd1.sent, as.numeric)
 dd1.syl <- syllable_sum(dd1)
+write.table(dd1.sent, "dd1.csv", sep = ",")
 
 pol.dd1 <- polarity(dd1.sent$speech) $all
 dd1.words <- pol.dd1$wc
@@ -58,6 +59,7 @@ dd2.sent <- data.table(sentSplit(dd2.df, "speech"))
 dd2.num <- seq(nrow(dd2.sent))
 lapply(dd2.sent, as.numeric)
 dd2.syl <- syllable_sum(dd2)
+write.table(dd2.sent, "dd2.csv", sep = ",")
 
 pol.dd2 <- polarity(dd2.sent$speech) $all
 dd2.words <- pol.dd2$wc
@@ -82,6 +84,7 @@ dd3.sent <- data.table(sentSplit(dd3.df, "speech"))
 dd3.num <- seq(nrow(dd3.sent))
 lapply(dd3.sent, as.numeric)
 dd3.syl <- syllable_sum(dd3)
+write.table(dd3.sent, "dd3.csv", sep = ",")
 
 pol.dd3 <- polarity(dd3.sent$speech) $all
 dd3.words <- pol.dd3$wc
@@ -106,6 +109,7 @@ dd4.sent <- data.table(sentSplit(dd4.df, "speech"))
 dd4.num <- seq(nrow(dd4.sent))
 lapply(dd4.sent, as.numeric)
 dd4.syl <- syllable_sum(dd4)
+write.table(dd4.sent, "dd4.csv", sep = ",")
 
 pol.dd4 <- polarity(dd4.sent$speech) $all
 dd4.words <- pol.dd4$wc
@@ -130,6 +134,7 @@ dd5.sent <- data.table(sentSplit(dd5.df, "speech"))
 dd5.num <- seq(nrow(dd5.sent))
 lapply(dd5.sent, as.numeric)
 dd5.syl <- syllable_sum(dd5)
+write.table(dd5.sent, "dd5.csv", sep = ",")
 
 pol.dd5 <- polarity(dd5.sent$speech) $all
 dd5.words <- pol.dd5$wc
@@ -154,6 +159,7 @@ dd6.sent <- data.table(sentSplit(dd6.df, "speech"))
 dd6.num <- seq(nrow(dd6.sent))
 lapply(dd6.sent, as.numeric)
 dd6.syl <- syllable_sum(dd6)
+write.table(dd6.sent, "dd6.csv", sep = ",")
 
 pol.dd6 <- polarity(dd6.sent$speech) $all
 dd6.words <- pol.dd6$wc
@@ -170,29 +176,38 @@ plot(pol.dd6, dd6.words)
 
 ## ##
 
-AllDon <- paste(scan("./Donald.txt", what="character"), collapse = " ")
-attach(AllDon)
-wordcloud(AllDon)
+donald <- paste(scan("./Donald.txt", what="character"), collapse = " ")
+attach(donald)
+wordcloud(donald)
 
-AllDon.df <- data.table(speech=AlLDon, person = "Donald Trump")
-AllDon.sent <- data.table(sentSplit(AllDon.df, "speech"))
+donald.df <- data.table(speech = donald, person = "Donald Trump")
+donald.sent <- data.table(sentSplit(donald.df, "speech"))
 
-AllDon.num <- seq(nrow(AllDon.sent))
-lapply(AllDon.sent, as.numeric)
-AllDon.syl <- syllable_sum(AllDon)
+donald.num <- seq(nrow(donald.sent))
+lapply(donald.sent, as.numeric)
+donald.syl <- syllable_sum(donald)
 
-pol.AllDon <- polarity(AllDon.sent$speech) $all
-AllDon.words <- pol.AllDon$wc
-AllDon.pol <- pol.AllDon$polarity
-AllDon.wc <- word_count(AllDon)
-freq_terms(AllDon)
+pol.donald <- polarity(donald.sent$speech) $all
+donald.words <- pol.donald$wc
+donald.pol <- pol.donald$polarity
+donald.wc <- word_count(donald)
+freq_terms(donald)
 
-AlLDonsentavg <- c(AllDon.syl/AllDon.num)
-summary(AllDonsentavg)
-AllDonwordavg <- c(AllDon.syl/AllDon.wc)
-summary(AllDonwordavg)
+donaldsentavg <- c(donald.syl/donald.num)
+summary(donaldsentavg)
+donaldwordavg <- c(donald.syl/donald.wc)
+summary(donaldwordavg)
 
-plot(pol.AllDon, dd6.AllDon)
+plot(donald.pol, donald.words)
+
+dd8 <- paste(scan("./DonaldDebate8.txt", what="character"), collapse = " ")
+attach(dd8)
+
+dd8.df <- data.table(speech=dd8, person = "Donald Trump")
+dd8.sent <- data.table(sentSplit(dd8.df, "speech"))
+write.table(dd8.sent, "dd8.csv", sep = ",")
+
+## ##
 
 # Function appears to be broken, will need to find a way to fix soon.
 readability <- automated_readability_index(speech, sentence.num) $Automated_Readability_Index
@@ -207,10 +222,60 @@ wordcloud(jebd1)
 jebd1.df <- data.table(speech=jebd1, person = "Jeb Bush")
 jebd1.sent <- data.table(sentSplit(jebd1.df, "speech"))
 
+jebd2 <- paste(scan("./JebDebate2.txt", what="character"), collapse = " ")
+attach(jebd2)
+
+jebd2.df <- data.table(speech=jebd2, person = "Jeb Bush")
+jebd2.sent <- data.table(sentSplit(jebd2.df, "speech"))
+
+jebd3 <- paste(scan("./JebDebate3.txt", what="character"), collapse = " ")
+attach(jebd3)
+
+jebd3.df <- data.table(speech=jebd3, person = "Jeb Bush")
+jebd3.sent <- data.table(sentSplit(jebd3.df, "speech"))
+
+jebd4 <- paste(scan("./JebDebate4.txt", what="character"), collapse = " ")
+attach(jebd4)
+
+jebd4.df <- data.table(speech=jebd4, person = "Jeb Bush")
+jebd4.sent <- data.table(sentSplit(jebd4.df, "speech"))
+
+jebd5 <- paste(scan("./JebDebate5.txt", what="character"), collapse = " ")
+attach(jebd5)
+
+jebd5.df <- data.table(speech=jebd5, person = "Jeb Bush")
+jebd5.sent <- data.table(sentSplit(jebd5.df, "speech"))
+
+jebd6 <- paste(scan("./JebDebate6.txt", what="character"), collapse = " ")
+attach(jebd6)
+
+jebd6.df <- data.table(speech=jebd6, person = "Jeb Bush")
+jebd6.sent <- data.table(sentSplit(jebd6.df, "speech"))
+
+jebd7 <- paste(scan("./JebDebate7.txt", what="character"), collapse = " ")
+attach(jebd7)
+
+jebd7.df <- data.table(speech=jebd7, person = "Jeb Bush")
+jebd7.sent <- data.table(sentSplit(jebd7.df, "speech"))
+
 jebd1.num <- seq(nrow(jebd1.sent))
 setcolorder(jebd1.sent, c("jebd1.num", "speech"))
 jebd1.syl <- syllable_sum(jebd1)
 summary(jebd1.syl)
+write.table(jebd1.sent, "jebd1.csv", sep = ",")
+write.table(jebd2.sent, "jebd2.csv", sep = ",")
+write.table(jebd3.sent, "jebd3.csv", sep = ",")
+write.table(jebd4.sent, "jebd4.csv", sep = ",")
+write.table(jebd5.sent, "jebd5.csv", sep = ",")
+write.table(jebd6.sent, "jebd6.csv", sep = ",")
+write.table(jebd7.sent, "jebd7.csv", sep = ",")
+
+jebd8 <- paste(scan("./JebDebate8.txt", what="character"), collapse = " ")
+attach(jebd8)
+                     
+jebd8.df <- data.table(speech=jebd8, person = "Jeb Bush")
+jebd8.sent <- data.table(sentSplit(jebd8.df, "speech"))
+write.table(jebd8.sent, "jebd8.csv", sep = ",")
 
 pol.jebd1 <- polarity(jebd1.sent$speech) $all
 jebd1.words <- pol.jebd1$wc
@@ -254,6 +319,62 @@ summary(tedd1wordavg)
 
 plot(tedd1.pol, tedd1.words)
 
+tedd1 <- paste(scan("./TedDebate1.txt", what="character"), collapse = " ")
+attach(tedd1)
+
+tedd1.df <- data.table(speech=tedd1, person = "Ted Cruz")
+tedd1.sent <- data.table(sentSplit(tedd1.df, "speech"))
+write.table(tedd1.sent, "tedd1.csv", sep = ",")
+
+tedd2 <- paste(scan("./TedDebate2.txt", what="character"), collapse = " ")
+attach(tedd2)
+
+tedd2.df <- data.table(speech=tedd2, person = "Ted Cruz")
+tedd2.sent <- data.table(sentSplit(tedd2.df, "speech"))
+write.table(tedd2.sent, "tedd2.csv", sep = ",")
+
+tedd3 <- paste(scan("./TedDebate3.txt", what="character"), collapse = " ")
+attach(tedd3)
+
+tedd3.df <- data.table(speech=tedd3, person = "Ted Cruz")
+tedd3.sent <- data.table(sentSplit(tedd3.df, "speech"))
+write.table(tedd3.sent, "tedd3.csv", sep = ",")
+
+tedd4 <- paste(scan("./TedDebate4.txt", what="character"), collapse = " ")
+attach(tedd4)
+
+tedd4.df <- data.table(speech=tedd4, person = "Ted Cruz")
+tedd4.sent <- data.table(sentSplit(tedd4.df, "speech"))
+write.table(tedd4.sent, "tedd4.csv", sep = ",")
+
+tedd5 <- paste(scan("./TedDebate5.txt", what="character"), collapse = " ")
+attach(tedd5)
+
+tedd5.df <- data.table(speech=tedd5, person = "Ted Cruz")
+tedd5.sent <- data.table(sentSplit(tedd5.df, "speech"))
+write.table(tedd5.sent, "tedd5.csv", sep = ",")
+
+tedd6 <- paste(scan("./TedDebate6.txt", what="character"), collapse = " ")
+attach(tedd6)
+
+tedd6.df <- data.table(speech=tedd6, person = "Ted Cruz")
+tedd6.sent <- data.table(sentSplit(tedd6.df, "speech"))
+write.table(tedd6.sent, "tedd6.csv", sep = ",")
+
+tedd7 <- paste(scan("./TedDebate7.txt", what="character"), collapse = " ")
+attach(tedd7)
+
+tedd7.df <- data.table(speech=tedd7, person = "Ted Cruz")
+tedd7.sent <- data.table(sentSplit(tedd7.df, "speech"))
+write.table(tedd7.sent, "tedd7.csv", sep = ",")
+
+tedd8 <- paste(scan("./TedDebate8.txt", what="character"), collapse = " ")
+attach(tedd8)
+
+tedd8.df <- data.table(speech=tedd8, person = "Ted Cruz")
+tedd8.sent <- data.table(sentSplit(tedd8.df, "speech"))
+write.table(tedd8.sent, "tedd8.csv", sep = ",")
+
 # Marco Rubio
 
 md1 <- paste(scan("./MarcoDebate1.txt", what="character"), collapse = " ")
@@ -281,6 +402,62 @@ md1wordavg <- c(md1.syl/md1.wc)
 summary(md1wordavg)
                    
 plot(md1.pol, md1.words)
+
+md1 <- paste(scan("./MarcoDebate1.txt", what="character"), collapse = " ")
+attach(md1)
+
+md1.df <- data.table(speech=md1, person = "Marco Rubio")
+md1.sent <- data.table(sentSplit(md1.df, "speech"))
+write.table(md1.sent, "md1.csv", sep = ",")
+                   
+md2 <- paste(scan("./MarcoDebate2.txt", what="character"), collapse = " ")
+attach(md2)
+
+md2.df <- data.table(speech=md2, person = "Marco Rubio")
+md2.sent <- data.table(sentSplit(md2.df, "speech"))
+write.table(md2.sent, "md2.csv", sep = ",")
+
+md3 <- paste(scan("./MarcoDebate3.txt", what="character"), collapse = " ")
+attach(md3)
+
+md3.df <- data.table(speech=md3, person = "Marco Rubio")
+md3.sent <- data.table(sentSplit(md3.df, "speech"))
+write.table(md3.sent, "md3.csv", sep = ",")
+
+md4 <- paste(scan("./MarcoDebate4.txt", what="character"), collapse = " ")
+attach(md4)
+
+md4.df <- data.table(speech=md4, person = "Marco Rubio")
+md4.sent <- data.table(sentSplit(md4.df, "speech"))
+write.table(md4.sent, "md4.csv", sep = ",")
+
+md5 <- paste(scan("./MarcoDebate5.txt", what="character"), collapse = " ")
+attach(md5)
+
+md5.df <- data.table(speech=md5, person = "Marco Rubio")
+md5.sent <- data.table(sentSplit(md5.df, "speech"))
+write.table(md5.sent, "md5.csv", sep = ",")
+
+md6 <- paste(scan("./MarcoDebate6.txt", what="character"), collapse = " ")
+attach(md6)
+
+md6.df <- data.table(speech=md6, person = "Marco Rubio")
+md6.sent <- data.table(sentSplit(md6.df, "speech"))
+write.table(md6.sent, "md6.csv", sep = ",")
+
+md7 <- paste(scan("./MarcoDebate7.txt", what="character"), collapse = " ")
+attach(md7)
+
+md7.df <- data.table(speech=md7, person = "Marco Rubio")
+md7.sent <- data.table(sentSplit(md7.df, "speech"))
+write.table(md7.sent, "md7.csv", sep = ",")
+
+md8 <- paste(scan("./MarcoDebate8.txt", what="character"), collapse = " ")
+attach(md8)
+
+md8.df <- data.table(speech=md8, person = "Marco Rubio")
+md8.sent <- data.table(sentSplit(md8.df, "speech"))
+write.table(md8.sent, "md8.csv", sep = ",")
 
 # Ben Carson
 
@@ -310,6 +487,62 @@ summary(bend1wordavg)
 
 plot(bend1.pol, bend1.words)
 
+bend1 <- paste(scan("./BenDebate1.txt", what="character"), collapse = " ")
+attach(bend1)
+                     
+bend1.df <- data.table(speech=bend1, person = "Ben Carson")
+bend1.sent <- data.table(sentSplit(bend1.df, "speech"))
+write.table(bend1.sent, "bend1.csv", sep = ",")
+
+bend2 <- paste(scan("./BenDebate2.txt", what="character"), collapse = " ")
+attach(bend2)
+
+bend2.df <- data.table(speech=bend2, person = "Ben Carson")
+bend2.sent <- data.table(sentSplit(bend2.df, "speech"))
+write.table(bend2.sent, "bend2.csv", sep = ",")
+
+bend3 <- paste(scan("./BenDebate3.txt", what="character"), collapse = " ")
+attach(bend3)
+
+bend3.df <- data.table(speech=bend3, person = "Ben Carson")
+bend3.sent <- data.table(sentSplit(bend3.df, "speech"))
+write.table(bend3.sent, "bend3.csv", sep = ",")
+
+bend4 <- paste(scan("./BenDebate4.txt", what="character"), collapse = " ")
+attach(bend4)
+
+bend4.df <- data.table(speech=bend4, person = "Ben Carson")
+bend4.sent <- data.table(sentSplit(bend4.df, "speech"))
+write.table(bend4.sent, "bend4.csv", sep = ",")
+
+bend5 <- paste(scan("./BenDebate5.txt", what="character"), collapse = " ")
+attach(bend5)
+
+bend5.df <- data.table(speech=bend5, person = "Ben Carson")
+bend5.sent <- data.table(sentSplit(bend5.df, "speech"))
+write.table(bend5.sent, "bend5.csv", sep = ",")
+
+bend6 <- paste(scan("./BenDebate6.txt", what="character"), collapse = " ")
+attach(bend6)
+
+bend6.df <- data.table(speech=bend6, person = "Ben Carson")
+bend6.sent <- data.table(sentSplit(bend6.df, "speech"))
+write.table(bend6.sent, "bend6.csv", sep = ",")
+
+bend7 <- paste(scan("./BenDebate7.txt", what="character"), collapse = " ")
+attach(bend7)
+
+bend7.df <- data.table(speech=bend7, person = "Ben Carson")
+bend7.sent <- data.table(sentSplit(bend7.df, "speech"))
+write.table(bend7.sent, "bend7.csv", sep = ",")
+
+bend8 <- paste(scan("./BenDebate8.txt", what="character"), collapse = " ")
+attach(bend8)
+
+bend8.df <- data.table(speech=bend8, person = "Ben Carson")
+bend8.sent <- data.table(sentSplit(bend8.df, "speech"))
+write.table(bend8.sent, "bend8.csv", sep = ",")
+
 # Rand Paul
 
 rd1 <- paste(scan("./RandDebate1.txt", what="character"), collapse = " ")
@@ -331,12 +564,54 @@ rd1.pol <- pol.rd1$polarity
 summary(pol.rd1)
 freq_terms(rd1)
 
-rd1sentavg <- c(rd1.sent/rd1.num)
+rd1sentavg <- c(rd1.syl/rd1.num)
 summary(rd1sentavg)
 rd1wordavg <- c(rd1.syl/rd1.wc)
 summary(rd1wordavg)
 
 plot(rd1.pol, rd1.words)
+
+rd1 <- paste(scan("./RandDebate1.txt", what="character"), collapse = " ")
+attach(rd1)
+                   
+rd1.df <- data.table(speech=rd1, person = "Rand Paul")
+rd1.sent <- data.table(sentSplit(rd1.df, "speech"))
+write.table(rd1.sent, "rd1.csv", sep = ",")
+
+rd2 <- paste(scan("./RandDebate2.txt", what="character"), collapse = " ")
+attach(rd2)
+
+rd2.df <- data.table(speech=rd2, person = "Rand Paul")
+rd2.sent <- data.table(sentSplit(rd2.df, "speech"))
+write.table(rd2.sent, "rd2.csv", sep = ",")
+
+rd3 <- paste(scan("./RandDebate3.txt", what="character"), collapse = " ")
+attach(rd3)
+
+rd3.df <- data.table(speech=rd3, person = "Rand Paul")
+rd3.sent <- data.table(sentSplit(rd3.df, "speech"))
+write.table(rd3.sent, "rd3.csv", sep = ",")
+
+rd4 <- paste(scan("./RandDebate4.txt", what="character"), collapse = " ")
+attach(rd4)
+
+rd4.df <- data.table(speech=rd4, person = "Rand Paul")
+rd4.sent <- data.table(sentSplit(rd4.df, "speech"))
+write.table(rd4.sent, "rd4.csv", sep = ",")
+
+rd5 <- paste(scan("./RandDebate5.txt", what="character"), collapse = " ")
+attach(rd5)
+
+rd5.df <- data.table(speech=rd5, person = "Rand Paul")
+rd5.sent <- data.table(sentSplit(rd5.df, "speech"))
+write.table(rd5.sent, "rd5.csv", sep = ",")
+
+rd7 <- paste(scan("./RandDebate7.txt", what="character"), collapse = " ")
+attach(rd7)
+
+rd7.df <- data.table(speech=rd7, person = "Rand Paul")
+rd7.sent <- data.table(sentSplit(rd7.df, "speech"))
+write.table(rd7.sent, "rd7.csv", sep = ",")
 
 # Chris Christie
 
@@ -366,6 +641,55 @@ summary(cd1wordavg)
 
 plot(cd1.pol, cd1.words)
 
+cd1 <- paste(scan("./ChrisDebate1.txt", what="character"), collapse = " ")
+attach(cd1)
+                   
+cd1.df <- data.table(speech=cd1, person = "Chris Christie")
+cd1.sent <- data.table(sentSplit(cd1.df, "speech"))
+write.table(cd1.sent, "cd1.csv", sep = ",")
+
+cd2 <- paste(scan("./ChrisDebate2.txt", what="character"), collapse = " ")
+attach(cd2)
+
+cd2.df <- data.table(speech=cd2, person = "Chris Christie")
+cd2.sent <- data.table(sentSplit(cd2.df, "speech"))
+write.table(cd2.sent, "cd2.csv", sep = ",")
+
+cd3 <- paste(scan("./ChrisDebate3.txt", what="character"), collapse = " ")
+attach(cd3)
+
+cd3.df <- data.table(speech=cd3, person = "Chris Christie")
+cd3.sent <- data.table(sentSplit(cd3.df, "speech"))
+write.table(cd3.sent, "cd3.csv", sep = ",")
+
+cd5 <- paste(scan("./ChrisDebate5.txt", what="character"), collapse = " ")
+attach(cd5)
+
+cd5.df <- data.table(speech=cd5, person = "Chris Christie")
+cd5.sent <- data.table(sentSplit(cd5.df, "speech"))
+write.table(cd5.sent, "cd5.csv", sep = ",")
+
+cd6 <- paste(scan("./ChrisDebate6.txt", what="character"), collapse = " ")
+attach(cd6)
+
+cd6.df <- data.table(speech=cd6, person = "Chris Christie")
+cd6.sent <- data.table(sentSplit(cd6.df, "speech"))
+write.table(cd6.sent, "cd6.csv", sep = ",")
+
+cd7 <- paste(scan("./ChrisDebate7.txt", what="character"), collapse = " ")
+attach(cd7)
+
+cd7.df <- data.table(speech=cd7, person = "Chris Christie")
+cd7.sent <- data.table(sentSplit(cd7.df, "speech"))
+write.table(cd7.sent, "cd7.csv", sep = ",")
+
+cd8 <- paste(scan("./ChrisDebate8.txt", what="character"), collapse = " ")
+attach(cd8)
+
+cd8.df <- data.table(speech=cd8, person = "Chris Christie")
+cd8.sent <- data.table(sentSplit(cd8.df, "speech"))
+write.table(cd8.sent, "cd8.csv", sep = ",")
+
 # John Kasich
 
 jd1 <- paste(scan("./JohnDebate1.txt", what="character"), collapse = " ")
@@ -393,6 +717,62 @@ jd1wordavg <- c(jd1.syl/jd1.wc)
 summary(jd1wordavg)
 
 plot(jd1.pol, jd1.words)
+
+jd1 <- paste(scan("./JohnDebate1.txt", what="character"), collapse = " ")
+attach(jd1)
+                   
+jd1.df <- data.table(speech=jd1, person = "John Kasich")
+jd1.sent <- data.table(sentSplit(jd1.df, "speech"))
+write.table(jd1.sent, "jd1.csv", sep = ",")
+
+jd2 <- paste(scan("./JohnDebate2.txt", what="character"), collapse = " ")
+attach(jd2)
+
+jd2.df <- data.table(speech=jd2, person = "John Kasich")
+jd2.sent <- data.table(sentSplit(jd2.df, "speech"))
+write.table(jd2.sent, "jd2.csv", sep = ",")
+
+jd3 <- paste(scan("./JohnDebate3.txt", what="character"), collapse = " ")
+attach(jd3)
+
+jd3.df <- data.table(speech=jd3, person = "John Kasich")
+jd3.sent <- data.table(sentSplit(jd3.df, "speech"))
+write.table(jd3.sent, "jd3.csv", sep = ",")
+
+jd4 <- paste(scan("./JohnDebate4.txt", what="character"), collapse = " ")
+attach(jd4)
+
+jd4.df <- data.table(speech=jd4, person = "John Kasich")
+jd4.sent <- data.table(sentSplit(jd4.df, "speech"))
+write.table(jd4.sent, "jd4.csv", sep = ",")
+
+jd5 <- paste(scan("./JohnDebate5.txt", what="character"), collapse = " ")
+attach(jd5)
+
+jd5.df <- data.table(speech=jd5, person = "John Kasich")
+jd5.sent <- data.table(sentSplit(jd5.df, "speech"))
+write.table(jd5.sent, "jd5.csv", sep = ",")
+
+jd6 <- paste(scan("./JohnDebate6.txt", what="character"), collapse = " ")
+attach(jd6)
+
+jd6.df <- data.table(speech=jd6, person = "John Kasich")
+jd6.sent <- data.table(sentSplit(jd6.df, "speech"))
+write.table(jd6.sent, "jd6.csv", sep = ",")
+
+jd7 <- paste(scan("./JohnDebate7.txt", what="character"), collapse = " ")
+attach(jd7)
+
+jd7.df <- data.table(speech=jd7, person = "John Kasich")
+jd7.sent <- data.table(sentSplit(jd7.df, "speech"))
+write.table(jd7.sent, "jd7.csv", sep = ",")
+
+jd8 <- paste(scan("./JohnDebate8.txt", what="character"), collapse = " ")
+attach(jd8)
+
+jd8.df <- data.table(speech=jd8, person = "John Kasich")
+jd8.sent <- data.table(sentSplit(jd8.df, "speech"))
+write.table(jd8.sent, "jd8.csv", sep = ",")
 
 #########
 # Bernie Sanders
@@ -500,6 +880,63 @@ bd4wordavg <- c(bd4.syl/bd4.wc)
 summary(bd4wordavg)
 
 plot(bd4.pol, bd4.words)
+
+bd5 <- paste(scan("./SandersDebate5.txt", what="character"), collapse = " ")
+attach(bd5)
+
+bd5.df <- data.table(speech=bd5, person = "Bernie Sanders")
+bd5.sent <- data.table(sentSplit(bd5.df, "speech"))
+
+bf1 <- paste(scan("./SandersForum.txt", what="character"), collapse = " ")
+attach(bf1)
+
+bf1.df <- data.table(speech=bf1, person = "Bernie Sanders")
+bf1.sent <- data.table(sentSplit(bf1.df, "speech"))
+
+bth1 <- paste(scan("./SandersTownHall.txt", what="character"), collapse = " ")
+attach(bth1)
+
+bth1.df <- data.table(speech=bth1, person = "Bernie Sanders")
+bth1.sent <- data.table(sentSplit(bth1.df, "speech"))
+
+write.table(bd1.sent, "bd1.csv", sep = ",")
+write.table(bd2.sent, "bd2.csv", sep = ",")
+write.table(bd3.sent, "bd3.csv", sep = ",")
+write.table(bd4.sent, "bd4.csv", sep = ",")
+write.table(bd5.sent, "bd5.csv", sep = ",")
+write.table(bf1.sent, "bf1.csv", sep = ",")
+write.table(bth1.sent, "bth1.csv", sep = ",")
+
+## ##
+
+bernie <- paste(scan("./Bernie.txt", what="character"), collapse = " ")
+attach(bernie)
+wordcloud(bernie)
+
+bernie.df <- data.table(speech=bernie, person = "Bernie Sanders")
+bernie.sent <- data.table(sentSplit(bernie.df, "speech"))
+
+bernie.num <- seq(nrow(bernie.sent))
+lapply(bernie.sent, as.numeric)
+bernie.syl <- syllable_sum(bernie)
+summary(bernie.syl)
+
+bernie.pol <- polarity(bernie.sent$speech) $all
+bernie.words <- bernie.pol$wc
+bernie.wc <- word_count(bernie)
+bernie.p <- bernie.pol$polarity
+summary(bernie.p)
+freq_terms(bernie)
+
+berniesentavg <- c(bernie.syl/bernie.num)
+summary(berniesentavg)
+berniewordavg <- c(bernie.syl/bernie.wc)
+summary(berniewordavg)
+
+plot(bernie.pol, bernie.words)
+shapiro.test(berniesentavg)
+
+## ##
 
 readability <- automated_readability_index(pol.bernie, berniesentence.num)
 
@@ -609,6 +1046,32 @@ summary(hd4wordavg)
 
 plot(hd4.pol, hd4.words)
 
+hd5 <- paste(scan("./HillaryDebate5.txt", what="character"), collapse = " ")
+attach(hd5)
+
+hd5.df <- data.table(speech=hd5, person = "Hillary Clinton")
+hd5.sent <- data.table(sentSplit(hd5.df, "speech"))
+
+hf1 <- paste(scan("./HillaryForum.txt", what="character"), collapse = " ")
+attach(hf1)
+
+hf1.df <- data.table(speech=hf1, person = "Hillary Clinton")
+hf1.sent <- data.table(sentSplit(hf1.df, "speech"))
+
+hth1 <- paste(scan("./HillaryTownHall.txt", what="character"), collapse = " ")
+attach(hth1)
+
+hth1.df <- data.table(speech=hth1, person = "Hillary Clinton")
+hth1.sent <- data.table(sentSplit(hth1.df, "speech"))
+
+write.table(hd1.sent, "hd1.csv", sep = ",")
+write.table(hd2.sent, "hd2.csv", sep = ",")
+write.table(hd3.sent, "hd3.csv", sep = ",")
+write.table(hd4.sent, "hd4.csv", sep = ",")
+write.table(hd5.sent, "hd5.csv", sep = ",")
+write.table(hf1.sent, "hf1.csv", sep = ",")
+write.table(hth1.sent, "hth1.csv", sep = ",")
+
 # Martin O'Malley
 
 mom1 <- paste(scan("./MartinDebate1.txt", what="character"), collapse = " ")
@@ -715,3 +1178,19 @@ mom4wordavg <- c(mom4.syl/mom4.wc)
 summary(mom4wordavg)
 
 plot(mom4.pol, mom4.words)
+
+momf1 <- paste(scan("./MartinForum.txt", what="character"), collapse = " ")
+attach(momf1)
+                     
+momf1.df <- data.table(speech=momf1, person = "Martin O’Malley")
+momf1.sent <- data.table(sentSplit(momf1.df, "speech"))
+                     
+write.table(mom1.sent, "mom1.csv", sep = ",")
+write.table(mom2.sent, "mom2.csv", sep = ",")
+write.table(mom3.sent, "mom3.csv", sep = ",")
+write.table(mom4.sent, "mom4.csv", sep = ",")
+write.table(momf1.sent, "momf1.csv", sep = ",")
+
+######
+
+t.test(AllDonsentavg, berniesentavg, paired = F, var.equal = F)
