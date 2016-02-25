@@ -1,208 +1,331 @@
 # Jared Brewer
 # Rhetorical Reframing
 # Created: 7 February 2016
-# Last modified: 7 February 2016
+# Last modified: 9 February 2016
 
 library(qdap)
 library(data.table)
 library(wordcloud)
 library(ggplot2)
 library(scales)
+library(plyr)
+library(reshape2)
+library(Rmisc)
 
 raw.donald <- paste(scan("./donald.txt", what="character"), collapse = " ")
 donald <- scrubber(raw.donald, num2word = T, fix.comma = T, fix.space = T)
 attach(donald)
-wordcloud(donald)
+# wordcloud(donald)
 freq_terms(donald)
 
 donald.df <- data.table(speech=donald, person = "Donald Trump")
 donald.sent <- data.table(sentSplit(donald.df, "speech"))
+donald.sub <- donald.sent[, sentence.num := seq(nrow(donald.sent))]
+donald.syl <- donald.sub[, syllables := syllable_sum(speech)]
+donald.syl[, wordsyl := word_count(speech)]
 
-donald.num <- seq(nrow(donald.sent))
-donald.syl <- syllable_sum(donald)
-donald.wc <- word_count(donald)
+donald.pol <- polarity(donald.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+donald.syl[, pol := donald.pol$polarity]
+donald.read <- c(automated_readability_index(donald.syl$speech, grouping.var = donald.syl$sentence.num))
+donald.sc <- donald.read$Readability
+donald.syl[, readability := donald.sc$Automated_Readability_Index]
 
-donald.sentavg <- c(donald.syl/donald.num)
-summary(donald.sentavg)
-donald.wordavg <- c(donald.syl/donald.wc)
-summary(donald.wordavg)
+####
 
 raw.hillary <- paste(scan("./hillary.txt", what="character"), collapse = " ")
 hillary <- scrubber(raw.hillary, num2word = T, fix.comma = T, fix.space = T)
 attach(hillary)
-wordcloud(hillary)
+# wordcloud(hillary)
 freq_terms(hillary)
 
 hillary.df <- data.table(speech=hillary, person = "Hillary Clinton")
 hillary.sent <- data.table(sentSplit(hillary.df, "speech"))
+hillary.sub <- hillary.sent[, sentence.num := seq(nrow(hillary.sent))]
+hillary.syl <- hillary.sub[, syllables := syllable_sum(speech)]
+hillary.syl[, wordsyl := word_count(speech)]
 
-hillary.num <- seq(nrow(hillary.sent))
-hillary.syl <- syllable_sum(hillary)
-hillary.wc <- word_count(hillary)
+hillary.pol <- polarity(hillary.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+hillary.syl[, pol := hillary.pol$polarity]
+hillary.read <- c(automated_readability_index(hillary.syl$speech, grouping.var = hillary.syl$sentence.num))
+hillary.sc <- hillary.read$Readability
+hillary.syl[, readability := hillary.sc$Automated_Readability_Index]
 
-hillary.sentavg <- c(hillary.syl/hillary.num)
-summary(hillary.sentavg)
-hillary.wordavg <- c(hillary.syl/hillary.wc)
-summary(hillary.wordavg)
+####
 
 raw.bernie <- paste(scan("./bernie.txt", what="character"), collapse = " ")
 bernie <- scrubber(raw.bernie, num2word = T, fix.comma = T, fix.space = T)
 attach(bernie)
-wordcloud(bernie)
+# wordcloud(bernie)
 freq_terms(bernie)
 
 bernie.df <- data.table(speech=bernie, person = "Bernie Sanders")
 bernie.sent <- data.table(sentSplit(bernie.df, "speech"))
+bernie.sub <- bernie.sent[, sentence.num := seq(nrow(bernie.sent))]
+bernie.syl <- bernie.sub[, syllables := syllable_sum(speech)]
+bernie.syl[, wordsyl := word_count(speech)]
 
-bernie.num <- seq(nrow(bernie.sent))
-bernie.syl <- syllable_sum(bernie)
-bernie.wc <- word_count(bernie)
+bernie.pol <- polarity(bernie.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+bernie.syl[, pol := bernie.pol$polarity]
+bernie.read <- c(automated_readability_index(bernie.syl$speech, grouping.var = bernie.syl$sentence.num))
+bernie.sc <- bernie.read$Readability
+bernie.syl[, readability := bernie.sc$Automated_Readability_Index]
 
-bernie.sentavg <- c(bernie.syl/bernie.num)
-summary(bernie.sentavg)
-bernie.wordavg <- c(bernie.syl/bernie.wc)
-summary(bernie.wordavg)
+####
 
 raw.ted <- paste(scan("./ted.txt", what="character"), collapse = " ")
 ted <- scrubber(raw.ted, num2word = T, fix.comma = T, fix.space = T)
 attach(ted)
-wordcloud(ted)
+# wordcloud(ted)
 freq_terms(ted)
 
 ted.df <- data.table(speech=ted, person = "Ted Cruz")
 ted.sent <- data.table(sentSplit(ted.df, "speech"))
+ted.sub <- ted.sent[, sentence.num := seq(nrow(ted.sent))]
+ted.syl <- ted.sub[, syllables := syllable_sum(speech)]
+ted.syl[, wordsyl := word_count(speech)]
 
-ted.num <- seq(nrow(ted.sent))
-ted.syl <- syllable_sum(ted)
-ted.wc <- word_count(ted)
+ted.pol <- polarity(ted.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+ted.syl[, pol := ted.pol$polarity]
+ted.read <- c(automated_readability_index(ted.syl$speech, grouping.var = ted.syl$sentence.num))
+ted.sc <- ted.read$Readability
+ted.syl[, readability := ted.sc$Automated_Readability_Index]
 
-ted.sentavg <- c(ted.syl/ted.num)
-summary(ted.sentavg)
-ted.wordavg <- c(ted.syl/ted.wc)
-summary(ted.wordavg)
+####
 
 raw.marco <- paste(scan("./marco.txt", what="character"), collapse = " ")
 marco <- scrubber(raw.marco, num2word = T, fix.comma = T, fix.space = T)
 attach(marco)
-wordcloud(marco)
+# wordcloud(marco)
 freq_terms(marco)
 
 marco.df <- data.table(speech=marco, person = "Marco Rubio")
 marco.sent <- data.table(sentSplit(marco.df, "speech"))
+marco.sub <- marco.sent[, sentence.num := seq(nrow(marco.sent))]
+marco.syl <- marco.sub[, syllables := syllable_sum(speech)]
+marco.syl[, wordsyl := word_count(speech)]
 
-marco.num <- seq(nrow(marco.sent))
-marco.syl <- syllable_sum(marco)
-marco.wc <- word_count(marco)
+marco.pol <- polarity(marco.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+marco.syl[, pol := marco.pol$polarity]
+marco.read <- c(automated_readability_index(marco.syl$speech, grouping.var = marco.syl$sentence.num))
+marco.sc <- marco.read$Readability
+marco.syl[, readability := marco.sc$Automated_Readability_Index]
 
-marco.sentavg <- c(marco.syl/marco.num)
-summary(marco.sentavg)
-marco.wordavg <- c(marco.syl/marco.wc)
-summary(marco.wordavg)
+####
 
 raw.ben <- paste(scan("./ben.txt", what="character"), collapse = " ")
 ben <- scrubber(raw.ben, num2word = T, fix.comma = T, fix.space = T)
 attach(ben)
-wordcloud(ben)
+# wordcloud(ben)
 freq_terms(ben)
 
 ben.df <- data.table(speech=ben, person = "Ben Carson")
 ben.sent <- data.table(sentSplit(ben.df, "speech"))
+ben.sub <- ben.sent[, sentence.num := seq(nrow(ben.sent))]
+ben.syl <- ben.sub[, syllables := syllable_sum(speech)]
+ben.syl[, wordsyl := word_count(speech)]
 
-ben.num <- seq(nrow(ben.sent))
-ben.syl <- syllable_sum(ben)
-ben.wc <- word_count(ben)
+ben.pol <- polarity(ben.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+ben.syl[, pol := ben.pol$polarity]
+ben.read <- c(automated_readability_index(ben.syl$speech, grouping.var = ben.syl$sentence.num))
+ben.sc <- ben.read$Readability
+ben.syl[, readability := ben.sc$Automated_Readability_Index]
 
-ben.sentavg <- c(ben.syl/ben.num)
-summary(ben.sentavg)
-ben.wordavg <- c(ben.syl/ben.wc)
-summary(ben.wordavg)
+####
 
 raw.chris <- paste(scan("./chris.txt", what="character"), collapse = " ")
 chris <- scrubber(raw.chris, num2word = T, fix.comma = T, fix.space = T)
 attach(chris)
-wordcloud(chris)
+# wordcloud(chris)
 freq_terms(chris)
 
 chris.df <- data.table(speech=chris, person = "Chris Christie")
 chris.sent <- data.table(sentSplit(chris.df, "speech"))
+chris.sub <- chris.sent[, sentence.num := seq(nrow(chris.sent))]
+chris.syl <- chris.sub[, syllables := syllable_sum(speech)]
+chris.syl[, wordsyl := word_count(speech)]
 
-chris.num <- seq(nrow(chris.sent))
-chris.syl <- syllable_sum(chris)
-chris.wc <- word_count(chris)
+chris.pol <- polarity(chris.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+chris.syl[, pol := chris.pol$polarity]
+chris.read <- c(automated_readability_index(chris.syl$speech, grouping.var = chris.syl$sentence.num))
+chris.sc <- chris.read$Readability
+chris.syl[, readability := chris.sc$Automated_Readability_Index]
 
-chris.sentavg <- c(chris.syl/chris.num)
-summary(chris.sentavg)
-chris.wordavg <- c(chris.syl/chris.wc)
-summary(chris.wordavg)
+####
 
 raw.rand <- paste(scan("./rand.txt", what="character"), collapse = " ")
 rand <- scrubber(raw.rand, num2word = T, fix.comma = T, fix.space = T)
 attach(rand)
-wordcloud(rand)
+# wordcloud(rand)
 freq_terms(rand)
 
 rand.df <- data.table(speech=rand, person = "Rand Paul")
 rand.sent <- data.table(sentSplit(rand.df, "speech"))
+rand.sub <- rand.sent[, sentence.num := seq(nrow(rand.sent))]
+rand.syl <- rand.sub[, syllables := syllable_sum(speech)]
+rand.syl[, wordsyl := word_count(speech)]
 
-rand.num <- seq(nrow(rand.sent))
-rand.syl <- syllable_sum(rand)
-rand.wc <- word_count(rand)
+rand.pol <- polarity(rand.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+rand.syl[, pol := rand.pol$polarity]
+rand.read <- c(automated_readability_index(rand.syl$speech, grouping.var = rand.syl$sentence.num))
+rand.sc <- rand.read$Readability
+rand.syl[, readability := rand.sc$Automated_Readability_Index]
 
-rand.sentavg <- c(rand.syl/rand.num)
-summary(rand.sentavg)
-rand.wordavg <- c(rand.syl/rand.wc)
-summary(rand.wordavg)
+####
 
 raw.jeb <- paste(scan("./jeb.txt", what="character"), collapse = " ")
 jeb <- scrubber(raw.jeb, num2word = T, fix.comma = T, fix.space = T)
 attach(jeb)
-wordcloud(jeb)
+# wordcloud(jeb)
 freq_terms(jeb)
 
 jeb.df <- data.table(speech=jeb, person = "Jeb Bush")
 jeb.sent <- data.table(sentSplit(jeb.df, "speech"))
+jeb.sub <- jeb.sent[, sentence.num := seq(nrow(jeb.sent))]
+jeb.syl <- jeb.sub[, syllables := syllable_sum(speech)]
+jeb.syl[, wordsyl := word_count(speech)]
 
-jeb.num <- seq(nrow(jeb.sent))
-jeb.syl <- syllable_sum(jeb)
-jeb.wc <- word_count(jeb)
+jeb.pol <- polarity(jeb.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+jeb.syl[, pol := jeb.pol$polarity]
+jeb.read <- c(automated_readability_index(jeb.syl$speech, grouping.var = jeb.syl$sentence.num))
+jeb.sc <- jeb.read$Readability
+jeb.syl[, readability := jeb.sc$Automated_Readability_Index]
 
-jeb.sentavg <- c(jeb.syl/jeb.num)
-summary(jeb.sentavg)
-jeb.wordavg <- c(jeb.syl/jeb.wc)
-summary(jeb.wordavg)
+####
 
 raw.john <- paste(scan("./john.txt", what="character"), collapse = " ")
 john <- scrubber(raw.john, num2word = T, fix.comma = T, fix.space = T)
 attach(john)
-wordcloud(john)
+# wordcloud(john)
 freq_terms(john)
 
 john.df <- data.table(speech=john, person = "John Kasich")
 john.sent <- data.table(sentSplit(john.df, "speech"))
+john.sub <- john.sent[, sentence.num := seq(nrow(john.sent))]
+john.syl <- john.sub[, syllables := syllable_sum(speech)]
+john.syl[, wordsyl := word_count(speech)]
 
-john.num <- seq(nrow(john.sent))
-john.syl <- syllable_sum(john)
-john.wc <- word_count(john)
+john.pol <- polarity(john.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+john.syl[, pol := john.pol$polarity]
+john.read <- c(automated_readability_index(john.syl$speech, grouping.var = john.syl$sentence.num))
+john.sc <- john.read$Readability
+john.syl[, readability := john.sc$Automated_Readability_Index]
 
-john.sentavg <- c(john.syl/john.num)
-summary(john.sentavg)
-john.wordavg <- c(john.syl/john.wc)
-summary(john.wordavg)
+####
 
 raw.martin <- paste(scan("./martin.txt", what="character"), collapse = " ")
 martin <- scrubber(raw.martin, num2word = T, fix.comma = T, fix.space = T)
 attach(martin)
-wordcloud(martin)
+# wordcloud(martin)
 freq_terms(martin)
 
 martin.df <- data.table(speech=martin, person = "Martin O'Malley")
 martin.sent <- data.table(sentSplit(martin.df, "speech"))
+martin.sub <- martin.sent[, sentence.num := seq(nrow(martin.sent))]
+martin.syl <- martin.sub[, syllables := syllable_sum(speech)]
+martin.syl[, wordsyl := word_count(speech)]
 
-martin.num <- seq(nrow(martin.sent))
-martin.syl <- syllable_sum(martin)
-martin.wc <- word_count(martin)
+martin.pol <- polarity(martin.syl$speech, grouping.var = "person", polarity.frame = qdapDictionaries::key.pol, constrain = FALSE, negators = qdapDictionaries::negation.words, amplifiers = qdapDictionaries::amplification.words)$all
+martin.syl[, pol := martin.pol$polarity]
+martin.read <- c(automated_readability_index(martin.syl$speech, grouping.var = martin.syl$sentence.num))
+martin.sc <- martin.read$Readability
+martin.syl[, readability := martin.sc$Automated_Readability_Index]
 
-martin.sentavg <- c(martin.syl/martin.num)
-summary(martin.sentavg)
-martin.wordavg <- c(martin.syl/martin.wc)
-summary(martin.wordavg)
+####
+
+donary <- rbind(donald.syl, hillary.syl)
+berned <- rbind(bernie.syl, ted.syl)
+marben <- rbind(marco.syl, ben.syl)
+chrisand <- rbind(chris.syl, rand.syl)
+jebon <- rbind(jeb.syl, john.syl)
+maronly <- martin.syl
+
+doned <- rbind(donary, berned)
+marand <- rbind(marben, chrisand)
+jebmar <- rbind(jebon, maronly)
+
+donand <- rbind(doned, marand)
+
+all.text <- rbind(donand, jebmar)
+all.text[, tot := NULL]
+all.text[, sentence.num := NULL]
+all.text[, wc := all.text$syllables/all.text$wordsyl]
+write.csv(all.text, "alltext.csv")
+
+####
+
+campaign <- read.csv("./alltext.csv", header = T)
+attach(campaign)
+
+campaign.aov <- aov(syllables~person, data=campaign)
+summary(campaign.aov)
+TukeyHSD(campaign.aov)
+
+camp.means <- c(mean(campaign$syllables, na.rm=T))
+camp.std <- c(sd(campaign$syllables, na.rm=T)) 
+camp.n <- c(sum(campaign$syllables, na.rm=T)/mean(campaign$syllables, na.rm=T))
+camp.se <- c(camp.std/sqrt(camp.n))
+syl.lim <- aes(ymax = syl.per$syllables + camp.se, ymin = syl.per$syllables - camp.se)
+
+words.aov <- aov(wc~person, data=campaign)
+summary(words.aov)
+TukeyHSD(words.aov)
+
+word.means <- c(mean(campaign$wc, na.rm=T))
+word.std <- c(sd(campaign$wc, na.rm=T)) 
+word.n <- c(sum(campaign$wc, na.rm=T)/mean(campaign$wc, na.rm=T))
+word.se <- c(word.std/sqrt(word.n))
+word.lim <- aes(ymax = syl.word$wc + word.se, ymin = syl.word$wc - word.se)
+
+party.aov <- aov(syllables~party, data=campaign)
+summary(party.aov)
+TukeyHSD(party.aov)
+
+party.means <- c(mean(campaign$syllables, na.rm=T))
+party.std <- c(sd(campaign$syllables, na.rm=T)) 
+party.n <- c(sum(campaign$syllables, na.rm=T)/mean(campaign$syllables, na.rm=T))
+party.se <- c(party.std/sqrt(party.n))
+party.lim <- aes(ymax = syl.party$syllables + party.se, ymin = syl.party$syllables - party.se)
+
+pol.aov <- aov(pol~person, data=campaign)
+summary(pol.aov)
+TukeyHSD(pol.aov)
+
+pol.means <- c(mean(campaign$pol, na.rm=T))
+pol.std <- c(sd(campaign$pol, na.rm=T)) 
+pol.n <- c(sum(campaign$pol, na.rm=T)/mean(campaign$pol, na.rm=T))
+pol.se <- c(pol.std/sqrt(pol.n))
+pol.lim <- aes(ymax = syl.pol$pol + pol.se, ymin = syl.pol$pol - pol.se)
+
+read.aov <- aov(readability~person, data=campaign)
+summary(read.aov)
+TukeyHSD(read.aov)
+
+read.means <- c(mean(campaign$readability, na.rm=T))
+read.std <- c(sd(campaign$readability, na.rm=T)) 
+read.n <- c(sum(campaign$readability, na.rm=T)/mean(campaign$readability, na.rm=T))
+read.se <- c(read.std/sqrt(read.n))
+read.lim <- aes(ymax = syl.read$readability + read.se, ymin = syl.read$readability - read.se)
+
+syl.per <- aggregate(list(syllables = campaign$syllables), list(person = campaign$person), FUN = mean)
+syl.word <- aggregate(list(wc = campaign$wc), list(person = campaign$person), FUN = mean)
+syl.party <- aggregate(list(syllables = campaign$syllables), list(party = campaign$party), FUN = mean)
+syl.pol <- aggregate(list(polarity = campaign$pol), list(person = campaign$person), FUN = mean)
+syl.read <- aggregate(list(readability = campaign$readability), list(person = campaign$person), FUN = mean)
+
+ggplot(syl.per, aes(x = person, y = syllables, color, fill = person)) + geom_bar(stat = "identity") + geom_errorbar(syl.lim, width = 0.35) + xlab("Candidate") + ylab("Syllables/Sentence") + guides(fill=guide_legend(title=NULL)) + scale_x_discrete(labels=abbreviate)
+ggplot(syl.word, aes(x = person, y = wc, color, fill = person)) + geom_bar(stat = "identity") + geom_errorbar(word.lim, width = 0.35) + scale_y_continuous(limits=c(1.25,1.52), oob = rescale_none) + xlab("Candidate") + ylab("Syllables/Word") + guides(fill=guide_legend(title=NULL)) + scale_x_discrete(labels=abbreviate)
+ggplot(syl.party, aes(x = party, y = syllables, color, fill = party)) + geom_bar(stat = "identity", fill = c("Blue", "Red")) + geom_errorbar(party.lim, width = 0.1) + xlab("Party") + ylab("Syllables/Sentence") + guides(fill=guide_legend(title=NULL)) + scale_x_discrete(labels=abbreviate)
+ggplot(syl.pol, aes(x = person, y = polarity, color, fill = person)) + geom_bar(stat = "identity") + geom_errorbar(pol.lim, width = 0.1) + xlab("Candidate") + ylab("Polarity") + guides(fill=guide_legend(title=NULL)) + scale_x_discrete(labels=abbreviate)
+ggplot(syl.read, aes(x = person, y = readability, color, fill = person)) + geom_bar(stat = "identity") + geom_errorbar(read.lim, width = 0.1) + xlab("Candidate") + ylab("Readability") + guides(fill=guide_legend(title=NULL)) + scale_x_discrete(labels=abbreviate)
+
+####
+
+orientation <- read.csv("./orientation.csv", header = T)
+all.or <- data.frame(orientation$candidate, orientation$iwerat, orientation$weyourat, orientation$iyourat)
+orient <- melt(all.or)
+
+ggplot(data=orient,  aes(orientation.candidate, y=value, group=variable)) + 
+  geom_bar(aes(fill=variable), stat="identity", 
+           position="dodge") + scale_x_discrete(labels=abbreviate) + xlab("Candidate") + ylab("Ratio") + scale_fill_discrete(name="Ratio",
+                                                                                                                             breaks=c("orientation.iwerat", "orientation.weyourat", "orientation.iyourat"),
+                                                                                                                             labels=c("I:We", "We:You", "I:You"))

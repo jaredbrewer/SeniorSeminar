@@ -9,34 +9,25 @@ library(wordcloud)
 library(ggplot2)
 library(scales)
 
-speech <- read.csv("./speech.csv", header = T)
+raw.speech <- read.csv("./speech.csv", header = T)
+speech <- scrubber(raw.speech, num2word = T, fix.comma = T, fix.space = T)
 attach(speech)
-speech2 <- read.csv("./speech2.csv", header = T)
+raw.speech2 <- read.csv("./speech2.csv", header = T)
+all.speech2 <- scrubber(raw.speech2, num2word = T, fix.comma = T, fix.space = T)
 attach(speech2)
 
-dnum <- 
-tnum <- 
-jebnum <- 
-jnum <- 
-mnum <- 
-cnum <- 
-rnum <- 
-bnum <- 
+speech.sent <- data.table(speech)
+add.syllables <- speech.sent[, syllables := syllable_sum(Sentence)]
 
-dsyl <- 
-tsyl <-
-jebsyl <-
-jsyl <-
-msyl <-
-csyl <-
-rsyl <-
-bsyl <-
+johnkasich <- paste(scan("./john.txt", what="character"), collapse = " ")
 
-hnum <- 
-bsnum <- 
-momnum <- 
+kasich.df <- data.table(speech=johnkasich, person="John Kasich")
+kasich.sent <- data.table(sentSplit(kasich.df, "speech"))
+# Add a sentence counter and remove unnecessary variables
+kasich.sub <- kasich.sent[, sentence.num := seq(nrow(kasich.sent))]
+noperson <- kasich.sub[, person := NULL]
+notot <- noperson[, tot := NULL]
+colorder <- setcolorder(noperson, c("sentence.num", "speech"))
 
-hsyl <-
-bssyl <-
-momsyl <- 
-
+# Syllables per sentence
+john.syl <- john.sub[, syllables := syllable_sum(speech)]
